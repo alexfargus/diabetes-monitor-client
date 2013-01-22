@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+        
+        <link rel="stylesheet" type="text/css" href="css/index.css" />
+        <link rel="stylesheet" type="text/css" href="css/jquery.mobile-1.2.0.css" />
+        <link rel="stylesheet" type="text/css" href="css/jquery.jqplot.css" />
+		<script type="text/javascript" src="js/cordova-2.2.0.js"></script>
+		<script type="text/javascript" src="js/jquery-1.8.3.js"></script>
+		<script type="text/javascript" src="js/jquery.mobile-1.2.0.js"></script>
+		
+		<script type="text/javascript" src="js/jquery.jqplot.js"></script>
+		<script type="text/javascript" src="js/jquery.jqplot.dateAxisRenderer.js"></script>
+		<script type="text/javascript" src="js/jquery.jqplot.canvasAxisLabelRenderer.js"></script>
+		<script type="text/javascript" src="js/jquery.jqplot.canvasTextRenderer.js"></script>
+        
+        <script type="text/javascript" src="js/knockout-2.2.0.js"></script>
+        <script type="text/javascript" src="js/moment.js"></script>
+
+        <script type="text/javascript" src="js/test_data.js"></script>
+
+		<script type="text/javascript" src="js/viewBloodGlucose.js"></script>
+		<script type="text/javascript" src="js/viewBloodGlucoseUnsafe.js"></script>
+		<script type="text/javascript" src="js/viewHistoricBloodGlucose.js"></script>
+		<script type="text/javascript" src="js/recordBloodGlucose.js"></script>
+    	<script type="text/javascript" src="js/index.js"></script>    	
+        
+        <title>Diabetes Monitor</title>
+    </head>
+    <body>
+
+	<div data-role="page" id="login"> 
+		<div data-role="header" data-position="fixed" data-id="header">
+			<h1>Login</h1>
+		</div> 
+		<div data-role="content">
+		</div> 
+		<div data-role="footer" data-position="fixed" data-id="navfooter">
+		</div><!-- /footer -->
+	</div><!-- /page --> 
+    	
+	<div data-role="page" id="viewBloodGlucose"> 
+		<div data-role="header" data-position="fixed" data-id="header">
+			<h1>Blood Glucose</h1>
+		</div> 
+		<div data-role="content">
+			<p><span data-bind="text: last_reading">LAST_GLUCOSE_READING</span> mmol/l</p>
+			<p>Last reading at <span data-bind="text: last_reading_time">LAST_GLUCOSE_READING_TIME</span></p>
+			<p>Next reading due at <span data-bind="text: next_reading_time">NEXT_GLUCOSE_READING_TIME</span></p>
+			<a href="#" data-role="button">Share</a>
+			<a href="#recordBloodGlucose" data-role="button">Record a reading</a>
+		</div> 
+		<div data-role="footer" data-position="fixed" data-id="navfooter">
+			<div data-role="navbar">
+					<ul>
+						<li><a href="#viewBloodGlucose">Add BM</a></li>
+						<li><a href="#viewHistoricBloodGlucose">Graphs</a></li>
+						<li><a href="#viewInspiration">Inspriation</a></li>
+						<li><a href="#viewFacts">Facts</a></li>
+						<li><a href="#viewHotline">Hotline</a></li>						
+					</ul>
+				</div><!-- /navbar -->
+		</div><!-- /footer -->
+	</div><!-- /page --> 
+	
+	<div data-role="page" id="recordBloodGlucose"> 
+		<div data-role="header" data-add-back-btn="true">
+			<h1>Record Your Blood Glucose</h1></div> 
+		<div data-role="content">
+			<input type="range" id="record_glucose_slider" value="5" min="0" max="25" step="0.1" />
+				
+			<fieldset data-role="controlgroup">
+				<legend>Please select all applicable statements:</legend>
+			     	<input type="checkbox" id="fasting_checkbox" />
+			     	<label for="fasting_checkbox">I have not eaten in the last 8 hours.</label>
+			</fieldset>
+
+			<button data-bind="click: recordGlucoseReading">Record</button>
+		</div> 
+		<div data-role="footer" data-position="fixed" data-id="navfooter">
+			<div data-role="navbar">
+					<ul>
+						<li><a href="#viewBloodGlucose">Add BM</a></li>
+						<li><a href="#viewHistoricBloodGlucose">Graphs</a></li>
+						<li><a href="#viewInspiration">Inspriation</a></li>
+						<li><a href="#viewFacts">Facts</a></li>
+						<li><a href="#viewHotline">Hotline</a></li>						
+					</ul>
+				</div><!-- /navbar -->
+		</div><!-- /footer -->
+	</div> <!-- /page -->
+	
+	<div data-role="page" id="viewBloodGlucoseSafe"> 
+		<div data-role="header" data-position="fixed" data-id="header">
+			<h1>Well done!</h1>
+		</div> 
+		<div data-role="content">
+			<p>Your blood glucose is within safe bounds.</p>
+			<button data-bind="click: returnHome">Return</button>
+		</div> 
+		<div data-role="footer" data-position="fixed" data-id="navfooter">
+			<div data-role="navbar">
+				<ul>
+					<li><a href="#viewBloodGlucose">Add BM</a></li>
+					<li><a href="#viewHistoricBloodGlucose">Graphs</a></li>
+					<li><a href="#viewInspiration">Inspriation</a></li>
+					<li><a href="#viewFacts">Facts</a></li>
+					<li><a href="#viewHotline">Hotline</a></li>						
+				</ul>
+			</div><!-- /navbar -->
+		</div> 
+	</div> <!-- /page -->
+	
+	<div data-role="page" id="viewBloodGlucoseUnsafe"> 
+		<div data-role="header" data-position="fixed" data-id="header">
+			<h1>Too bad...</h1>
+		</div>
+		<div data-role="content">
+			<p>Your blood glucose is outside safe bounds.</p>
+			<p>In order to help you track why this has happened, please select the applicable statements below:</p>			
+<!--
+			<fieldset id="triggers" data-role="controlgroup" data-bind="foreach: triggers">
+				<input type="checkbox" class="custom" data-bind="id: trigger_id, value: trigger_value" />
+			    <label data-bind="for: trigger_id, text: trigger_text"></label>
+			</fieldset>
+-->
+			<fieldset id="triggers">
+				
+			</fieldset>			
+			<button data-bind="click: returnHome">Ok</button>
+		</div> 
+		<div data-role="footer" data-position="fixed" data-id="navfooter">
+			<div data-role="navbar">
+				<ul>
+					<li><a href="#viewBloodGlucose">Add BM</a></li>
+					<li><a href="#viewHistoricBloodGlucose">Graphs</a></li>
+					<li><a href="#viewInspiration">Inspriation</a></li>
+					<li><a href="#viewFacts">Facts</a></li>
+					<li><a href="#viewHotline">Hotline</a></li>						
+				</ul>
+			</div><!-- /navbar -->
+		</div> 
+	</div> <!-- /page -->
+	
+	<div data-role="page" id="viewHistoricBloodGlucose"> 
+		<div data-role="header" data-position="fixed" data-id="header">
+			<h1>Graphs</h1>
+		</div> 
+		<div data-role="content">
+			<div id="glucoseChart">
+			</div>
+			<div data-role="controlgroup" data-type="horizontal">
+				<button data-bind="click: plotDay">Day</button>
+				<button data-bind="click: plotWeek">Week</button>
+				<button data-bind="click: plotMonth">Month</button>
+			</div>
+		</div> 
+		<div data-role="footer" data-position="fixed" data-id="navfooter">
+			<div data-role="navbar">
+					<ul>
+						<li><a href="#viewBloodGlucose">Add BM</a></li>
+						<li><a href="#viewHistoricBloodGlucose">Graphs</a></li>
+						<li><a href="#viewInspiration">Inspriation</a></li>
+						<li><a href="#viewFacts">Facts</a></li>
+						<li><a href="#viewHotline">Hotline</a></li>						
+					</ul>
+				</div><!-- /navbar -->
+		</div><!-- /footer -->
+	</div> <!-- /page -->		
+
+	<div data-role="page" id="viewInspiration"> 
+		<div data-role="header" data-position="fixed" data-id="header">
+			<h1>Inspiration</h1>
+		</div> 
+		<div data-role="content">...</div> 
+		<div data-role="footer" data-position="fixed" data-id="navfooter">
+			<div data-role="navbar">
+					<ul>
+						<li><a href="#viewBloodGlucose">Add BM</a></li>
+						<li><a href="#viewHistoricBloodGlucose">Graphs</a></li>
+						<li><a href="#viewInspiration">Inspriation</a></li>
+						<li><a href="#viewFacts">Facts</a></li>
+						<li><a href="#viewHotline">Hotline</a></li>						
+					</ul>
+				</div><!-- /navbar -->
+		</div><!-- /footer -->
+	</div> <!-- /page -->
+    
+	<div data-role="page" id="viewFacts"> 
+		<div data-role="header" data-position="fixed" data-id="header">
+			<h1>Facts</h1>
+		</div> 
+		<div data-role="content">...</div> 
+		<div data-role="footer" data-position="fixed" data-id="navfooter">
+			<div data-role="navbar">
+					<ul>
+						<li><a href="#viewBloodGlucose">Add BM</a></li>
+						<li><a href="#viewHistoricBloodGlucose">Graphs</a></li>
+						<li><a href="#viewInspiration">Inspriation</a></li>
+						<li><a href="#viewFacts">Facts</a></li>
+						<li><a href="#viewHotline">Hotline</a></li>						
+					</ul>
+				</div><!-- /navbar -->
+		</div><!-- /footer -->
+	</div> <!-- /page -->    
+    
+	<div data-role="page" id="viewHotline"> 
+		<div data-role="header" data-position="fixed" data-id="header">
+			<h1>Hotline</h1>
+		</div> 
+		<div data-role="content">
+			<p>Remember, if you need support or advice call the Diabetes UK CareLine on:</p>
+			<ul>
+				<li>0845 120 2960</li>
+				<li>Online chat</li>
+			</ul>
+			<p>Lines are open Monday-Friday (9am - 5pm)</p>
+			<p>Mobile phone chares may vary.</p>
+		</div> 
+		<div data-role="footer" data-position="fixed" data-id="navfooter">
+			<div data-role="navbar">
+					<ul>
+						<li><a href="#viewBloodGlucose">Add BM</a></li>
+						<li><a href="#viewHistoricBloodGlucose">Graphs</a></li>
+						<li><a href="#viewInspiration">Inspiration</a></li>
+						<li><a href="#viewFacts">Facts</a></li>
+						<li><a href="#viewHotline">Hotline</a></li>
+					</ul>
+				</div><!-- /navbar -->
+		</div><!-- /footer -->
+	</div> <!-- /page -->    
+        
+    <script type="text/javascript">console.log('Start');</script>
+    </body>
+</html>
