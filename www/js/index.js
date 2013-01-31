@@ -79,13 +79,14 @@ init = function(event){
 		tx.executeSql('INSERT INTO triggers(statement) VALUES("I have recently exercised.")');
 		tx.executeSql('INSERT INTO triggers(statement) VALUES("I have recently eaten.")');
 
-		// Creating test data
+/*		// Creating test data
 		testData = getTestData();
 		for (var i = 0; i < testData.length; i++){
 			var record = testData[i];
 			tx.executeSql('INSERT INTO blood_glucose(reading, timestamp) VALUES (?, Datetime(?))',
 							[record.reading, record.adjustedDatetime]);
 		}
+*/
 	};	
 	var databaseInitSuccess = function(){
 		// Initialise the page models.
